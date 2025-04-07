@@ -1,0 +1,205 @@
+@model AspnetCoreMvcFull.ViewModels.RegistrationViewModel
+
+@{
+    Layout = "_BlankLayout";
+}
+
+@section PageStyles {
+    <link rel="stylesheet" href="~/vendor/css/pages/page-auth.css">
+}
+
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+            <!-- Register Card -->
+            <div class="card px-sm-6 px-0">
+                <div class="card-body">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center mb-6">
+                        <a href="/" class="app-brand-link gap-2">
+                            <span class="app-brand-logo demo">
+                                <img src="~/assets/img/ministrylogo.png" alt="App Logo">
+                            </span>
+                            <span class="app-brand-text demo text-heading fw-bold">@TempData.Peek("appName")</span>
+                        </a>
+                    </div>
+                    <!-- /Logo -->
+
+                    <h4 style="direction:rtl" class="mb-1">تسجيل مستخدم جديد</h4>
+                    <p style="direction:rtl" class="mb-6">سجل عن طريق الرقم الوزاري</p>
+
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger" style="direction: rtl;">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <div class="alert alert-success" style="direction: rtl;">
+                            @ViewBag.SuccessMessage
+                        </div>
+                    }
+
+                    <form id="formAuthentication" class="mb-6" asp-action="RegisterBasic" method="post" novalidate>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div style="direction:rtl" class="mb-3">
+                            <label for="MinistrialNumber" class="form-label">الرقم الوزاري</label>
+                            <input type="text" class="form-control" id="MinistrialNumber" name="MinistrialNumber" placeholder="أدخل الرقم الوزاري" required>
+                            <span asp-validation-for="MinistrialNumber" class="text-danger"></span>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-3">
+                            <label for="Name" class="form-label">الاسم</label>
+                            <input type="text" class="form-control" id="Name" name="Name" placeholder="أدخل اسمك" required>
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-3">
+                            <label for="Phone" class="form-label">رقم الهاتف</label>
+                            <input type="text" class="form-control" id="Phone" name="Phone" placeholder="أدخل رقم هاتفك" required>
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-3">
+                            <label for="Password" class="form-label">كلمة المرور</label>
+                            <div style="direction:ltr" class="input-group input-group-merge">
+                                <input type="password" id="Password" class="form-control" name="Password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" required>
+                                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-3">
+                            <label for="ConfirmPassword" class="form-label">تأكيد كلمة المرور</label>
+                            <div style="direction:ltr" class="input-group input-group-merge">
+                                <input type="password" id="ConfirmPassword" class="form-control" name="ConfirmPassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" required>
+                                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-3">
+                            <label for="RegionID" class="form-label">المنطقة</label>
+                            <select class="form-control" id="RegionID" name="RegionID" required>
+                                <option value="" disabled selected>اختر المنطقة</option>
+                                @if (Model.Regions != null)
+                                {
+                                    @foreach (var region in Model.Regions)
+                                    {
+                                        <option value="@region.Value">@region.Text</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="" disabled>No regions available</option>
+                                }
+                            </select>
+                            <span asp-validation-for="RegionID" class="text-danger"></span>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-3">
+                            <label for="DirectorateID" class="form-label">المديرية</label>
+                            <select class="form-control" id="DirectorateID" name="DirectorateID" required>
+                                <option value="" disabled selected>اختر المديرية</option>
+                            </select>
+                            <span asp-validation-for="DirectorateID" class="text-danger"></span>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-3">
+                            <label for="NationalID" class="form-label">المدرسة</label>
+                            <select class="form-control" id="NationalID" name="NationalID" required>
+                                <option value="" disabled selected>اختر المدرسة</option>
+                            </select>
+                            <span asp-validation-for="NationalID" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary d-grid w-100">تسجيل</button>
+                        </div>
+                    </form>
+
+                    <p class="text-center">
+                        <span>لديك حساب؟</span>
+                        <a href="@Url.Action("LoginBasic", "Auth")">
+                            <span>سجل الدخول الآن</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <!-- /Register Card -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function populateDirectorates(regionID) {
+                if (regionID) {
+                    $.getJSON('@Url.Action("GetDirectorates", "Auth")', { regionId: regionID }, function(data) {
+                        var directorateSelect = $('#DirectorateID');
+                        directorateSelect.empty();
+                        directorateSelect.append('<option value="" disabled selected>اختر المديرية</option>');
+                        $.each(data, function(index, item) {
+                            directorateSelect.append('<option value="' + item.value + '">' + item.text + '</option>');
+                        });
+                    });
+                } else {
+                    $('#DirectorateID').empty();
+                    $('#DirectorateID').append('<option value="" disabled selected>اختر المديرية</option>');
+                }
+                $('#NationalID').empty();
+                $('#NationalID').append('<option value="" disabled selected>اختر المدرسة</option>');
+            }
+
+            function populateSchools(directorateID) {
+                if (directorateID) {
+                    $.getJSON('@Url.Action("GetSchools", "Auth")', { directorateId: directorateID }, function(data) {
+                        var schoolSelect = $('#NationalID');
+                        schoolSelect.empty();
+                        schoolSelect.append('<option value="" disabled selected>اختر المدرسة</option>');
+                        $.each(data, function(index, item) {
+                            schoolSelect.append('<option value="' + item.value + '">' + item.text + '</option>');
+                        });
+                    });
+                } else {
+                    $('#NationalID').empty();
+                    $('#NationalID').append('<option value="" disabled selected>اختر المدرسة</option>');
+                }
+            }
+
+            $('#RegionID').change(function() {
+                var regionID = $(this).val();
+                populateDirectorates(regionID);
+            });
+
+            $('#DirectorateID').change(function() {
+                var directorateID = $(this).val();
+                populateSchools(directorateID);
+            });
+
+            // Maintain selections on form submission error
+            var regionID = $('#RegionID').val();
+            if (regionID) {
+                populateDirectorates(regionID);
+            }
+            var directorateID = $('#DirectorateID').val();
+            if (directorateID) {
+                populateSchools(directorateID);
+            }
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+    
+      @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    
+}
+
+

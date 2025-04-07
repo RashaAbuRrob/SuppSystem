@@ -1,0 +1,313 @@
+@model AspnetCoreMvcFull.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "اللوحة الرئيسية";
+}
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/apex-charts/apex-charts.css" />
+    <style>
+        .filter-form .form-group {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .filter-form select {
+            width: 90%;
+        }
+
+        .filter-form button {
+            margin-top: 10px; 
+            margin-left: 10px; 
+        }
+    </style>
+}
+@section VendorScripts {
+    <script src="~/vendor/libs/apex-charts/apexcharts.js"></script>
+}
+@section PageScripts {
+    <script src="~/js/dashboards-analytics.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#region').change(function () {
+                var regionId = $(this).val();
+                if (regionId) {
+                    $.ajax({
+                        url: '@Url.Action("GetDirectoratesByRegion")',
+                        type: 'GET',
+                        data: { regionId: regionId },
+                        success: function (data) {
+                            var directorateSelect = $('#directorate');
+                            directorateSelect.empty();
+                            directorateSelect.append('<option value="" disabled selected>اختر المديرية</option>');
+                            $.each(data, function (index, item) {
+                                directorateSelect.append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#directorate').empty().append('<option value="" disabled selected>اختر المديرية</option>');
+                    $('#school').empty().append('<option value="" disabled selected>اختر المدرسة</option>');
+                }
+            });
+
+            $('#directorate').change(function () {
+                var directorateId = $(this).val();
+                if (directorateId) {
+                    $.ajax({
+                        url: '@Url.Action("GetSchoolsByDirectorate")',
+                        type: 'GET',
+                        data: { directorateId: directorateId },
+                        success: function (data) {
+                            var schoolSelect = $('#school');
+                            schoolSelect.empty();
+                            schoolSelect.append('<option value="" disabled selected>اختر المدرسة</option>');
+                            $.each(data, function (index, item) {
+                                schoolSelect.append('<option value="' + item.nationalId + '">' + item.name + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#school').empty().append('<option value="" disabled selected>اختر المدرسة</option>');
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        function updateHiddenField(hiddenFieldId, value) {
+            document.getElementById(hiddenFieldId).value = value;
+        }
+
+        // Set initial values on page load
+        document.getElementById('region').value = '@ViewBag.SelectedRegionId';
+        document.getElementById('directorate').value = '@ViewBag.SelectedDirectorateId';
+        document.getElementById('school').value = '@ViewBag.SelectedSchoolId';
+    </script>
+}
+
+<div dir="rtl" class="row">
+    <div class="col-xxl-8 mb-6 order-0">
+        <div class="card">
+            <div class="d-flex align-items-start row">
+                <div class="col-sm-7">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary mb-3">أهلا بك🎉 @Model.User.Name</h5>
+                        <p class="mb-6">أدمن النظام الموظف في @Model.School?.Name (ID: @Model.School?.NationalId)</p>
+                        <a href="javascript:;" class="btn btn-sm btn-outline-primary">تعديل معلوماتي</a>
+                    </div>
+                </div>
+                <div class="col-sm-5 text-center text-sm-left">
+                    <div class="card-body pb-0 px-0 px-md-6">
+                        <img src="~/img/illustrations/man-with-laptop.png" height="175" alt="View Badge User">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xxl-4 col-lg-12 col-md-4 order-1">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 col-6 mb-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-title d-flex align-items-start justify-content-between mb-4">
+                            <div class="avatar flex-shrink-0">
+                                <img src="~/img/icons/unicons/chart-success.png" alt="chart success" class="rounded">
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded text-muted"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-1">المختبرات الأكاديمية</p>
+                        <h4 class="card-title mb-3">@Model.TotalAcadimicLabs</h4>
+                        <small class="text-success fw-medium"><i class='bx bx-up-arrow-alt'></i></small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-6 mb-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-title d-flex align-items-start justify-content-between mb-4">
+                            <div class="avatar flex-shrink-0">
+                                <img src="~/img/icons/unicons/wallet-info.png" alt="wallet info" class="rounded">
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded text-muted"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
+                                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-1">المختبرات المهنية BTEC</p>
+                        <h4 class="card-title mb-3">@Model.TotalBTECLabs</h4>
+                        <small class="text-success fw-medium"><i class='bx bx-up-arrow-alt'></i></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bordered Table with Filters -->
+    <div class="col-12 col-xxl-12 order-2 order-md-3 order-xxl-2 mb-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>الأجهزة حسب الفلاتر</h5>
+                <form class="d-flex justify-content-start align-items-center filter-form" method="post" asp-action="AdminDashboard">
+                    <!-- Hidden fields to retain selected values -->
+                    <input type="hidden" id="SelectedRegionId" name="SelectedRegionId" value="@ViewBag.SelectedRegionId" />
+                    <input type="hidden" id="SelectedDirectorateId" name="SelectedDirectorateId" value="@ViewBag.SelectedDirectorateId" />
+                    <input type="hidden" id="SelectedSchoolId" name="SelectedSchoolId" value="@ViewBag.SelectedSchoolId" />
+
+                    <div class="form-group me-3">
+                        <label for="region">المنطقة</label>
+                        <select class="form-control" id="region" name="RegionId" onchange="updateHiddenField('SelectedRegionId', this.value)">
+                            <option value="" disabled selected>اختر المنطقة</option>
+                            @foreach (var region in ViewBag.Regions ?? Enumerable.Empty<AspnetCoreMvcFull.Models.Region>())
+                            {
+                                <option value="@region.Id">@region.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group me-3">
+                        <label for="directorate">المديرية</label>
+                        <select class="form-control" id="directorate" name="DirectorateId" onchange="updateHiddenField('SelectedDirectorateId', this.value)">
+                            <option value="" disabled selected>اختر المديرية</option>
+                            @foreach (var directorate in ViewBag.Directorates ?? Enumerable.Empty<AspnetCoreMvcFull.Models.Directorate>())
+                            {
+                                <option value="@directorate.Id">@directorate.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group me-3">
+                        <label for="school">المدرسة</label>
+                        <select class="form-control" id="school" name="SchoolId" onchange="updateHiddenField('SelectedSchoolId', this.value)">
+                            <option value="" disabled selected>اختر المدرسة</option>
+                            @foreach (var school in ViewBag.Schools ?? Enumerable.Empty<AspnetCoreMvcFull.Models.School>())
+                            {
+                                <option value="@school.NationalId">@school.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">تطبيق الفلاتر</button>
+                </form>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>عدد المختبرات الأكاديمية</th>
+                                <th>عدد مختبرات BTEC</th>
+                                <th>عدد أجهزة الحاسوب (Desktop)</th>
+                                <th>عدد أجهزة اللابتوب</th>
+                                <th>عدد الطابعات</th>
+                                <th>عدد الألواح التفاعلية</th>
+                                <th>عدد أجهزة العرض (Data Show)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.TotalAcadimicLabs</td>
+                                <td>@Model.TotalBTECLabs</td>
+                                <td>@Model.TotalDesktops</td>
+                                <td>@Model.TotalLaptops</td>
+                                <td>@Model.TotalPrinters</td>
+                                <td>@Model.TotalInteractiveBoards</td>
+                                <td>@Model.TotalDatashows</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ Bordered Table -->
+    <!-- Charts Row -->
+    <div class="col-12 col-xxl-12 order-3 order-md-4 order-xxl-3 mb-6">
+        <div class="row">
+            <div class="col-lg-6 mb-6">
+                <div class="card h-100">
+                    <div class="row row-bordered g-0">
+                        <div class="col-lg-12">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <div class="card-title mb-0">
+                                    <h5 class="m-0 me-2">Total Revenue</h5>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn p-0" type="button" id="totalRevenue" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="bx bx-dots-vertical-rounded bx-lg text-muted"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalRevenue">
+                                        <a class="dropdown-item" href="javascript:void(0);">Select All</a>
+                                        <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                                        <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="totalRevenueChart" class="px-3" style="min-height: 347px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-6">
+                <div class="card h-100">
+                    <div class="card-header nav-align-top">
+                        <ul class="nav nav-pills" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-tabs-line-card-income" aria-controls="navs-tabs-line-card-income" aria-selected="true">Income</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button type="button" class="nav-link" role="tab" aria-selected="false" tabindex="-1">Expenses</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button type="button" class="nav-link" role="tab" aria-selected="false" tabindex="-1">Profit</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content p-0">
+                            <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel" style="position: relative;">
+                                <div class="d-flex mb-6">
+                                    <div class="avatar flex-shrink-0 me-3">
+                                        <img src="../../assets/img/icons/unicons/wallet-primary.png" alt="User">
+                                    </div>
+                                    <div>
+                                        <p class="mb-0">أجهزة الحاسوب </p>
+                                        <div class="d-flex align-items-center">
+                                            <h6 class="mb-0 me-1">$459.10</h6>
+                                            <small class="text-success fw-medium">
+                                                <i class="bx bx-chevron-up bx-lg"></i>
+                                                42.9%
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="incomeChart" style="min-height: 232px;"></div>
+                                <div class="d-flex align-items-center justify-content-center mt-6 gap-3">
+                                    <div class="flex-shrink-0" style="position: relative;">
+                                        <div id="expensesOfWeek" style="min-height: 57.7px;"></div>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">Income this week</h6>
+                                        <small>$39k less than last week</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

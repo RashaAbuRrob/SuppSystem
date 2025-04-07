@@ -1,0 +1,102 @@
+@model AspnetCoreMvcFull.ViewModels.DesktopViewModel
+
+@if (ViewBag.DebugMessage != null)
+{
+    <div class="alert alert-info" style="direction: rtl;">
+        @ViewBag.DebugMessage
+    </div>
+}
+
+@{
+    Layout = "_BlankLayout";
+    ViewData["Title"] = "تعديل جهاز الكمبيوتر";
+    @section PageStyles {
+        <link rel="stylesheet" href="~/vendor/css/pages/page-auth.css">
+    }
+}
+
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+            <div class="card px-sm-6 px-0">
+                <div class="card-body">
+                    <div class="app-brand justify-content-center">
+                        <a href="" class="app-brand-link gap-2">
+                            <span class="app-brand-logo demo">
+                                <img src="~/assets/img/ministrylogo.png" alt="App Logo">
+                            </span>
+                            <span class="app-brand-text demo text-heading fw-bold"></span>
+                        </a>
+                    </div>
+                    <h4 style="direction:rtl" class="mb-1">تعديل جهاز الكمبيوتر في مدرستك </h4>
+                    <p style="direction:rtl" class="mb-6">يرجى تعديل النموذج أدناه لتحديث بيانات الجهاز</p>
+
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <div class="alert alert-success" style="direction: rtl;">
+                            @ViewBag.SuccessMessage
+                        </div>
+                    }
+
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger" style="direction: rtl;">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+
+                    <form id="formEditDesktop" class="mb-6" action="/Dashboards/EditDesktop" method="POST" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                        <input type="hidden" id="ExistingImage" name="ExistingImage" value="@Model.Barcode" />
+
+                        <div style="direction:rtl" class="mb-6">
+                            <label for="BrandID" class="form-label">ماركة الجهاز</label>
+                            @Html.DropDownListFor(m => m.BrandID, new SelectList(ViewBag.Brands, "Id", "Name", Model.BrandID), "اختر الماركة", new { @class = "form-control", required = "required" })
+                        </div>
+
+                        <div style="direction:rtl" class="mb-6">
+                            <label for="ModelID" class="form-label">الموديل</label>
+                            @Html.DropDownListFor(m => m.ModelID, new SelectList(ViewBag.Models, "Id", "Name", Model.ModelID), "اختر الموديل", new { @class = "form-control", required = "required" })
+                        </div>
+
+                        <div style="direction:rtl" class="mb-6">
+                            <label for="LabID" class="form-label">المختبر</label>
+                            <input type="text" class="form-control" id="LabID" name="LabID" value="@Model.LabID" placeholder="ادخل رقم المختبر" required>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-6">
+                            <label for="SerialNumber" class="form-label">الرقم التسلسلي</label>
+                            <input type="text" class="form-control" id="SerialNumber" name="SerialNumber" value="@Model.SerialNumber" placeholder="ادخل الرقم التسلسلي" required>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-6">
+                            <label for="Ram" class="form-label">RAM</label>
+                            <input type="text" class="form-control" id="Ram" name="Ram" value="@Model.Ram" placeholder="ادخل سعة الذاكرة RAM" required>
+                        </div>
+
+                        <div style="direction:rtl" class="mb-6">
+                            <label for="Processor" class="form-label">المعالج</label>
+                            @Html.DropDownListFor(m => m.Processor, new SelectList(new[] { "i3", "i5", "i7", "i9", "Other" }), "اختر نوع المعالج", new { @class = "form-control", required = "required" })
+                        </div>
+
+                        <div style="direction:rtl" class="mb-6">
+                            <label class="form-label" for="Image">Barcode</label>
+                            <input type="file" class="form-control" id="Image" name="Image" accept="image/*" disabled>
+                            <br />
+                         <!--   <img src="@Model.Barcode" alt="Barcode" class="img-fluid"> -->
+                        </div>
+
+                        <div class="mb-6">
+                            <button class="btn btn-primary d-grid w-100" type="submit">تعديل</button>
+                        </div>
+
+                        <div class="text-center">
+                            <a href="/Dashboards/Desktop" class="btn btn-primary">الرجوع الى الأجهزة</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
