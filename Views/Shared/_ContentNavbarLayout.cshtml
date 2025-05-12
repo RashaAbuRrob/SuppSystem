@@ -38,10 +38,11 @@
 
 @{
     bool isMenu = ViewData["isMenu"] != null && Convert.ToBoolean(ViewData["isMenu"]);
+    bool isAdmin = User.IsInRole("Admin"); // Check if the logged-in user is an Admin
 }
 
 <div class='layout-wrapper layout-content-navbar @(isMenu ? "" : "layout-without-menu")'>
-    <div class='layout-container'>
+    <div class='layout-container' style="padding-right: 20px;">
         <!-- Layout page -->
         <div class="layout-page">
             <!-- Navbar -->
@@ -70,8 +71,23 @@
         <!-- / Layout page -->
         @if (isMenu)
         {
-            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" style="order: 2;">
-                @await Html.PartialAsync("Sections/Menu/_VerticalMenu")
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" style="order: inherit;" dir="rtl" padding-right=20px>
+                @if (ViewBag.UserType == "Admin")
+                {
+                    @await Html.PartialAsync("Sections/Menu/_VerticalMenu_Admin")
+                }
+                else if (ViewBag.UserType == "DepartmentHead")
+                {
+                    @await Html.PartialAsync("Sections/Menu/_VerticalMenu_DepartmrntHead")
+                }
+                else if (ViewBag.UserType == "LabTechnician")
+                {
+                    @await Html.PartialAsync("Sections/Menu/_VerticalMenu")
+                }
+                else
+                {
+                    <p>No Sidebar Available</p>
+                }
             </aside>
         }
     </div>
@@ -82,5 +98,5 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     }
     <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-    <div class="drag-target"></div>
+    <div class="drag-target"></div>zzz
 </div>

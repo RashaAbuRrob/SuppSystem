@@ -3,55 +3,44 @@
     @section PageStyles {
         <link rel="stylesheet" href="~/vendor/css/pages/page-auth.css">
     }
-
-    @if (ViewBag.ErrorMessage != null)
-
-
-
-    {
-        <div class="alert alert-danger">
-            @ViewBag.ErrorMessage
-        </div>
-    }
 }
-@* ************** Content ************** *@
 
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
-            <!-- Register -->
+            <!-- Login Card -->
             <div class="card px-sm-6 px-0">
                 <div class="card-body">
                     <!-- Logo -->
                     <div class="app-brand justify-content-center">
                         <a href="" class="app-brand-link gap-2">
-
                             <span class="app-brand-logo demo">
                                 <img src="~/assets/img/ministrylogo.png" alt="App Logo">
                             </span>
-                            <span class="app-brand-text demo text-heading fw-bold">  </span>
+                            <span class="app-brand-text demo text-heading fw-bold"></span>
                         </a>
                     </div>
                     <!-- /Logo -->
-                    <h4 style="direction:rtl" class="mb-1">أهلا بك   👋</h4>
+                    <h4 style="direction:rtl" class="mb-1">أهلا بك 👋</h4>
                     <p style="direction:rtl" class="mb-6">الرجاء سجل دخولك بالرقم الوزاري</p>
 
-
-                    <form id="formAuthentication" class="mb-6" action="/Auth/LoginBasic" method="POST">
-                        <div style="direction:rtl" class="mb-6">
-                            <label for="minNo" class="form-label">الرقم الوزراي</label>
-                            <input type="text" class="form-control" id="minNo" name="minNo" placeholder="أدخل الرقم الوزاري" autofocus>
-                            @if (ViewBag.ErrorMessage != null)
-
-
-
-                            {
-
-                                <div class="alert alert-danger" style="direction: rtl;">
-                                    @ViewBag.ErrorMessage
-                                </div>
-                            }
+                    <!-- Error Message -->
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger" style="direction: rtl;">
+                            @ViewBag.ErrorMessage
                         </div>
+                    }
+
+                    <!-- Login Form -->
+                    <form id="formAuthentication" class="mb-6" action="/Auth/LoginBasic" method="POST">
+                        <!-- Ministrial Number -->
+                        <div style="direction:rtl" class="mb-6">
+                            <label for="minNo" class="form-label">الرقم الوزاري</label>
+                            <input type="text" class="form-control" id="minNo" name="minNo" placeholder="أدخل الرقم الوزاري" autofocus>
+                        </div>
+
+                        <!-- Password -->
                         <div style="direction:rtl" class="mb-6 form-password-toggle">
                             <label style="direction:rtl" class="form-label" for="password">كلمة المرور</label>
                             <div style="direction:ltr" class="input-group input-group-merge">
@@ -59,6 +48,8 @@
                                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                             </div>
                         </div>
+
+                        <!-- Remember Me and Forgot Password -->
                         <div class="mb-8">
                             <div class="d-flex justify-content-between mt-8">
                                 <div class="form-check mb-0 ms-2">
@@ -72,6 +63,8 @@
                                 </a>
                             </div>
                         </div>
+
+                        <!-- Login Button -->
                         <div class="mb-6">
                             <button class="btn btn-primary d-grid w-100" type="submit">تسجيل دخول</button>
                         </div>
@@ -80,12 +73,12 @@
                     <p class="text-center">
                         <span>تسجيل موظف جديد</span>
                         <a href="/Auth/RegisterBasic">
-                            <span>تسجبل موظف جديد</span>
+                            <span>تسجيل موظف جديد</span>
                         </a>
                     </p>
                 </div>
             </div>
-            <!-- /Register -->
+            <!-- /Login Card -->
         </div>
     </div>
 </div>

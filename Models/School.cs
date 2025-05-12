@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace AspnetCoreMvcFull.Models;
@@ -9,7 +9,7 @@ public partial class School
 
     public string? Name { get; set; }
 
-    public int DirectorateId { get; set; }
+    public int? DirectorateId { get; set; }
 
     public string? MaxGrade { get; set; }
 
@@ -37,5 +37,5 @@ public partial class School
 
     public virtual ICollection<Printer> Printers { get; set; } = new List<Printer>();
 
-    public virtual User? Technician { get; set; }
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

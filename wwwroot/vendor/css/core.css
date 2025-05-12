@@ -22285,6 +22285,7 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
 
 .layout-container {
   min-height: 100vh;
+  margin-right:100px;
 }
 
 .layout-wrapper,
@@ -22293,6 +22294,7 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
   display: flex;
   flex: 1 1 auto;
   align-items: stretch;
+  padding-right: 20px;
 }
 
 .layout-page,

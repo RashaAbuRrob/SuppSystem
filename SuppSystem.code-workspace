@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../../../.cursor-tutor"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"cursor.cmdk.useThemedDiffBackground": true,
+		"workbench.colorTheme": "Visual Studio Light",
+		"zenMode.fullScreen": false,
+		"zenMode.hideLineNumbers": false,
+		"zenMode.hideStatusBar": false,
+		"zenMode.restore": false,
+		"zenMode.silentNotifications": false,
+		"zenMode.centerLayout": false
+	}
+}

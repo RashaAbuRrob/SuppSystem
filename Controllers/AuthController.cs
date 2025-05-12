@@ -147,28 +147,43 @@ namespace AspnetCoreMvcFull.Controllers
             .ToList();
         return Json(schools);
       }
-    
-    
+
+
     [HttpPost]
     public async Task<IActionResult> LoginBasic(int minNo, string password)
     {
       _logger.LogInformation("Attempting login for ID: {ID}", minNo);
+
+      // Fetching the user from the database
       var user = await _context.Users
           .FirstOrDefaultAsync(u => u.MinistrialNumber == minNo);
 
+      // Verify the user and password
       if (user != null && BCrypt.Net.BCrypt.Verify(password, user.Password))
       {
         _logger.LogInformation("Login successful for MinNo: {minNo}", minNo);
-        _httpContextAccessor.HttpContext.Session.SetInt32("UserMinNo", user.MinistrialNumber);
-        _httpContextAccessor.HttpContext.Session.SetString("UserIsAdmin", user.IsAdmin.ToString());
-        _httpContextAccessor.HttpContext.Session.SetString("UserName", user.Name);
-        if (user.IsAdmin == true)
-        {
-          return RedirectToAction("AdminDashboard", "Dashboards");
-        }
-        return RedirectToAction("Index", "Dashboards");
-      }
 
+        // Storing user information in session
+        _httpContextAccessor.HttpContext.Session.SetInt32("UserMinNo", user.MinistrialNumber);
+        _httpContextAccessor.HttpContext.Session.SetString("UserName", user.Name);
+        _httpContextAccessor.HttpContext.Session.SetInt32("UserTypeID", (int)user.UserType);
+
+        // Redirect based on UserType
+        switch (user.UserType)
+        {
+          case 1: // Admin
+            return RedirectToAction("AdminDashboard", "Admin");
+          case 2: // Department Head
+            return RedirectToAction("DepartmentDashboard", "DepartmentHead");
+          case 3: // Lab Technician
+            return RedirectToAction("Index", "LabTechnician");
+          default: // Fallback for unknown UserType
+            return RedirectToAction("Index", "Dashboards");
+        }
+      
+    }
+
+      // If login fails
       _logger.LogWarning("Login failed for MinNo: {minNo}", minNo);
       ViewBag.ErrorMessage = "الرقم الوزاري أو كلمة المرور غير صحيحة";
       return View("LoginBasic");

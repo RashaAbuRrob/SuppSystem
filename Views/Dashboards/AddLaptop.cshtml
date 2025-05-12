@@ -1,8 +1,8 @@
-@model AspnetCoreMvcFull.ViewModels.DesktopViewModel
+@model AspnetCoreMvcFull.ViewModels.LaptopViewModel
 
 @{
     Layout = "_BlankLayout";
-    ViewData["Title"] = "Add New Desktop";
+    ViewData["Title"] = "Add New Laptop";
     @section PageStyles {
         <link rel="stylesheet" href="~/vendor/css/pages/page-auth.css">
     }
@@ -11,7 +11,7 @@
 <div class="container-xxl">
     <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
-            <!-- Add Desktop Form -->
+            <!-- Add laptop Form -->
             <div class="card px-sm-6 px-0">
                 <div class="card-body">
                     <!-- Logo -->
@@ -25,7 +25,7 @@
                     </div>
                     <!-- /Logo -->
                     <h4 style="direction:rtl" class="mb-1">أهلا بك, @TempData.Peek("developerName")!</h4>
-                    <h4 style="direction:rtl" class="mb-1">إضافة جهاز جديد إلى مدرستك @TempData.Peek("appName")</h4>
+                    <h4 style="direction:rtl" class="mb-1">إضافة جهاز لابتوب جديد إلى مدرستك </h4>
                     <p style="direction:rtl" class="mb-6">يرجى ملء النموذج أدناه لإضافة جهاز جديد</p>
 
                     @if (ViewBag.SuccessMessage != null)
@@ -35,7 +35,7 @@
                         </div>
                     }
 
-                    <form id="formAddSystem" class="mb-6" action="/Dashboards/AddDesktop" method="POST" enctype="multipart/form-data">
+                    <form id="formAddSystem" class="mb-6" action="/Dashboards/AddLaptop" method="POST" enctype="multipart/form-data">
                         <div style="direction:rtl" class="mb-6">
                             <label for="BrandID" class="form-label">ماركة الجهاز</label>
                             <select class="form-control" id="BrandID" name="BrandID" required>
@@ -79,20 +79,18 @@
                                 <option value="Other">Other</option>
                             </select>
                         </div>
-                        <div style="direction:rtl" class="mb-6">
-                            <label for="Image" class="form-label">Barcode</label>
-                            <input type="file" class="form-control" id="Image" name="Image" accept="image/*" disabled>
-                        </div>
+
+
                         <div class="mb-6">
                             <button class="btn btn-primary d-grid w-100" type="submit">إضافة</button>
                         </div>
                     </form>
                     <div class="text-center">
-                        <a href="/Dashboards/Desktop" class="btn btn-primary">الرجوع الى الأجهزة</a>
+                        <a href="/Dashboards/Laptop" class="btn btn-primary">الرجوع الى الأجهزة</a>
                     </div>
                 </div>
             </div>
-            <!-- /Add Desktop Form -->
+            <!-- /Add laptop Form -->
         </div>
     </div>
 </div>

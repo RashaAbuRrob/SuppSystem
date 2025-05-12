@@ -1,0 +1,69 @@
+@model AspnetCoreMvcFull.ViewModels.LabViewModel
+
+@{
+    Layout = "_BlankLayout";
+    ViewData["Title"] = "Add New Lab";
+    @section PageStyles {
+        <link rel="stylesheet" href="~/vendor/css/pages/page-auth.css">
+    }
+}
+
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+            <!-- Add Lab Form -->
+            <div class="card px-sm-6 px-0">
+                <div class="card-body">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center">
+                        <a href="" class="app-brand-link gap-2">
+                            <span class="app-brand-logo demo">
+                                <img src="~/assets/img/ministrylogo.png" alt="App Logo">
+                            </span>
+                            <span class="app-brand-text demo text-heading fw-bold"></span>
+                        </a>
+                    </div>
+                    <!-- /Logo -->
+                    <h4 style="direction:rtl" class="mb-1">أهلا بك, @TempData.Peek("developerName")!</h4>
+                    <h4 style="direction:rtl" class="mb-1">إضافة مختبر جديد إلى مدرستك </h4>
+                    <p style="direction:rtl" class="mb-6">يرجى ملء النموذج أدناه لإضافة مختبر جديد</p>
+
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <div class="alert alert-success" style="direction: rtl;">
+                            @ViewBag.SuccessMessage
+                        </div>
+                    }
+
+                    <form id="formAddLab" class="mb-6" asp-action="AddLab" method="POST">
+                        <!-- Field for LabNumberInSchool -->
+                        <div style="direction:rtl" class="mb-6">
+                            <label for="LabNumberInSchool" class="form-label">رقم المختبر في المدرسة</label>
+                            <input type="number" id="LabNumberInSchool" name="LabNumberInSchool" class="form-control" value="@Model?.LabNumberInSchool" required />
+                        </div>
+
+                        <!-- Dropdown for Lab Type -->
+                        <div style="direction:rtl" class="mb-6">
+                            <label for="Type" class="form-label">نوع المختبر</label>
+                            <select class="form-control" id="Type" name="Type" required>
+                                <option value="" disabled selected>اختر نوع المختبر</option>
+                                @foreach (var type in ViewBag.LabTypes as List<string>)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-6">
+                            <button class="btn btn-primary d-grid w-100" type="submit">إضافة</button>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        <a href="/Dashboards/Lab" class="btn btn-primary">الرجوع الى المختبرات</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /Add Lab Form -->
+        </div>
+    </div>
+</div>

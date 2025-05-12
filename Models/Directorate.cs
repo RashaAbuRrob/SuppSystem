@@ -11,7 +11,11 @@ public partial class Directorate
 
     public int? RegionId { get; set; }
 
+    public int? ItdepartmentHead { get; set; }
+
     public virtual Region? Region { get; set; }
 
     public virtual ICollection<School> Schools { get; set; } = new List<School>();
+
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

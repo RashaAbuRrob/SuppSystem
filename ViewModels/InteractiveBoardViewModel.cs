@@ -1,21 +1,25 @@
+using System;
+
 namespace AspnetCoreMvcFull.ViewModels
 {
-  public class InteractiveboardViewModel
+  public class InteractiveBoardViewModel
   {
+    public int Id { get; set; }
 
-    public int ID { get; set; }
-    public int BrandID { get; set; }
-    public int ModelID { get; set; }  
-    public string? BrandName { get; set; }
-    public string? ModelName { get; set; }
-    public int LabID { get; set; }
-    public string? SerialNumber { get; set; }
-    public string? Ram { get; set; }
-    public string? Processor { get; set; }
-    public string? Barcode { get; set; }
-    public IFormFile? Image { get; set; }
-        
+    public int? BrandId { get; set; }
+
+    public string? BrandName { get; set; } // Optional: To display the brand name if needed
+
+    public int? ModelId { get; set; }
+
+    public string? ModelName { get; set; } // Optional: To display the model name if needed
+
+    public int? SchoolId { get; set; }
+
+    public string? SchoolName { get; set; } // Optional: To display the school name if needed
+
+    public int? LabId { get; set; }
+
+    public string? LabType { get; set; } // Optional: To display the lab type (e.g., Computer Lab, Science Lab)
   }
-
-
 }

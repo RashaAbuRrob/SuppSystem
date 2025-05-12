@@ -25,7 +25,7 @@
                     </div>
                     <!-- /Logo -->
                     <h4 style="direction:rtl" class="mb-1">أهلا بك, @TempData.Peek("developerName")!</h4>
-                    <h4 style="direction:rtl" class="mb-1">إضافة جهاز جديد إلى مدرستك @TempData.Peek("appName")</h4>
+                    <h4 style="direction:rtl" class="mb-1">إضافة جهاز جديد إلى مدرستك </h4>
                     <p style="direction:rtl" class="mb-6">يرجى ملء النموذج أدناه لإضافة جهاز جديد</p>
 
                     @if (ViewBag.SuccessMessage != null)
@@ -79,10 +79,7 @@
                                 <option value="Other">Other</option>
                             </select>
                         </div>
-                        <div style="direction:rtl" class="mb-6">
-                            <label for="Image" class="form-label">Barcode</label>
-                            <input type="file" class="form-control" id="Image" name="Image" accept="image/*" disabled>
-                        </div>
+                        
                         <div class="mb-6">
                             <button class="btn btn-primary d-grid w-100" type="submit">إضافة</button>
                         </div>

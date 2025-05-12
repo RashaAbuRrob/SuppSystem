@@ -36,6 +36,8 @@ namespace AspnetCoreMvcFull.ViewModels
     [Required]
     public int NationalID { get; set; }
 
+    public int UserTypeID { get; set; }
+
     public  IEnumerable<SelectListItem>? Regions { get; set; }
   }
 }

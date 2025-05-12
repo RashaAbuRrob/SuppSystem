@@ -1,0 +1,135 @@
+@{
+  TempData.Keep();
+  string? currentPage = ViewContext.HttpContext.Request.Path;
+}
+
+<!-- Menu -->
+@* ! Do this simple *@
+<aside style="direction:rtl" id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+
+  @* ! Hide app brand if navbar-full *@
+    <div 
+      class='app-brand demo @((@ViewData["navbarFull"] != null && Convert.ToBoolean(@ViewData["navbarFull"])) ? "d-xl-none" : "")'>
+        <a asp-controller="Dashboards" asp-action="Index" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                @await Html.PartialAsync("../_Partials/_Macros")
+            </span>
+            <span class="flex-md-fill demo menu-text fw-bold ms-2">@TempData.Peek("appName")</span>
+        </a>
+
+    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+      <i class="bx bx-chevron-left bx-sm d-flex align-items-center justify-content-center"></i>
+    </a>
+  </div>
+
+  <div class="menu-inner-shadow"></div>
+
+  @* ! Full version menu-items *@
+  <ul class="menu-inner py-1">
+    <!-- Dashboards -->
+    <li class='menu-item@(currentPage.EndsWith("/") || currentPage.StartsWith("/Dashboards/") ? " active open" : "")'>
+      <a href="Dashboards/AdminDashboard.cshtml" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-home-smile"></i>
+        <div class="text-truncate" data-i18n="Dashboards">الأجهزة</div>
+        
+      </a>
+      <ul class="menu-sub">
+                <li class='menu-item@(currentPage == "/AdminDashboard" ? " active" : "")'>
+                    <a asp-controller="Dashboards" asp-action="AdminDashboard" class="menu-link">
+                        <div>الرئيسية رئيس قسم تكنولوجيا معلومات</div>
+                    </a>
+                </li>
+        <li class='menu-item@(currentPage == "/Lab" ? " active" : "")'>
+          <a asp-controller="Dashboards" asp-action="Lab" class="menu-link">
+            <div>المختبرات</div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Desktop" ? " active" : "")'>
+          <a asp-controller="Dashboards" asp-action="Desktop"  class="menu-link">
+            <div>أجهزة الكمبيوتر</div><div class="badge bg-label-primary fs-tiny rounded-pill ms-auto text-uppercase"></div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Printer" ? " active" : "")'>
+                    <a asp-controller="Dashboards" asp-action="Printer"  class="menu-link">
+            <div>الطابعات</div><div class="badge bg-label-primary fs-tiny rounded-pill ms-auto text-uppercase"></div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage == "/Datashow" ? " active" : "")'>
+                    <a asp-controller="Dashboards" asp-action="Datashow" class="menu-link">
+                        <div>Datashows</div><div class="badge bg-label-primary fs-tiny rounded-pill ms-auto text-uppercase"></div>
+          </a>
+        </li>
+        <li class='menu-item@(currentPage=="/Laptop" ? " active" : "")'>
+                    <a asp-controller="Dashboards" asp-action="Laptop" class="menu-link">
+                        <div>اللابتوب</div><div class="badge bg-label-primary fs-tiny rounded-pill ms-auto text-uppercase"></div>
+          </a>
+        </li>
+                <li class='menu-item@(currentPage=="/Laptop" ? " active" : "")'>
+                    <a asp-controller="Dashboards" asp-action="Laptop" class="menu-link">
+                        <div>الألواح التفاعية</div><div class="badge bg-label-primary fs-tiny rounded-pill ms-auto text-uppercase"></div>
+                    </a>
+                </li>
+      </ul>
+
+    </li>
+
+    
+
+   
+   
+    
+    <!-- عمليات فنية -->
+    <li class="menu-header small text-uppercase"><span class="menu-header-text">عمليات فنية</span></li>
+    <!-- Cards -->
+        <li class='menu-item@(currentPage.StartsWith("/LayoutExamples") ? " active open" : "")'>
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div>الحسابات</div>
+            </a>
+
+            <ul class="menu-sub">
+
+                <li class='menu-item@(currentPage == "/LayoutExamples/WithoutMenu" ? " active" : "")'>
+                    <a asp-controller="Auth" asp-action="RegisterBasic" class="menu-link">
+                        <div>اضافة مستخدم جديد</div>
+                    </a>
+                </li>
+                <li class='menu-item@(currentPage == "/LayoutExamples/WithoutNavbar" ? " active" : "")'>
+                    <a asp-controller="LayoutExamples" asp-action="WithoutNavbar" class="menu-link">
+                        <div>تعديل بيانات مستخدم</div>
+                    </a>
+                </li>
+                <li class='menu-item@(currentPage == "/LayoutExamples/Fluid" ? " active" : "")'>
+                    <a asp-controller="LayoutExamples" asp-action="Fluid" class="menu-link">
+                        <div>حذف مستخدم</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+   
+    <!-- الدعم -->
+    <li class="menu-header small text-uppercase"><span class="menu-header-text">الدعم</span></li>
+    <li class="menu-item">
+      <a href='@TempData.Peek("support")' target="_blank" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-support"></i>
+        <div>الدعم الفني</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href='@TempData.Peek("documentation")' target="_blank" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-file"></i>
+        <div>معلومات إضافية</div>
+      </a>
+    </li>
+        <li class="menu-item">
+           
+                <a asp-controller="Home" asp-action="Index" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-log-out"></i>
+                <div>تسجيل خروج</div>
+            </a>
+        </li>
+  </ul>
+
+</aside>
+<!-- / Menu -->

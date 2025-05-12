@@ -4,17 +4,17 @@
   right: 0;
   top: 0;
   bottom: 0;
-  width: 300px; /* Adjust the width as needed */
+  width: 100px; /* Adjust the width as needed */
   z-index: 1000;
   overflow-y: auto;
 }
 
 /* Adjust the content wrapper to not overlap with the menu */
 .layout-wrapper.layout-content-navbar .layout-container {
-  padding-right: 300px; /* Match the width of the right-side menu */
+  padding-right: 20px !important; /* Match the width of the right-side menu */
 }
 
 /* Ensure the layout container has the correct padding */
 .layout-page .content-wrapper {
-  margin-right: 300px; /* Match the width of the right-side menu */
+  margin-right: 20px !important; /* Match the width of the right-side menu */
 }

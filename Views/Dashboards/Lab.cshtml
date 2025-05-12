@@ -1,5 +1,79 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+@model IEnumerable<AspnetCoreMvcFull.ViewModels.LabViewModel>
+
 @{
+    ViewData["Title"] = "المختبرات";
 }
+
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/bootstrap/css/bootstrap.min.css" />
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+}
+
+@section PageStyles {
+    <style>
+        /* Border styles for table, rows, and cells */
+        .table, .table th, .table td {
+            border: 1px solid #ddd !important;
+        }
+
+        tr.clickable-row {
+            cursor: pointer;
+        }
+
+        .table tbody tr.clickable-row:hover {
+            border: 2px solid rgba(0, 123, 255, 0.6) !important;
+        }
+    </style>
+}
+
+@section PageScripts {
+    <script src="~/js/dashboards-analytics.js"></script>
+}
+
+<div style="direction:rtl">
+    <a href="/Dashboards/AddLab" class="btn btn-primary">إضافة مختبر</a>
+    <br />
+    <br />
+    <div class="card">
+        <h5 class="card-header">المختبرات</h5>
+        <div class="card-body">
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>رقم المختبر في المدرسة</th>
+                            <th>نوع المختبر</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @if (Model != null && Model.Any())
+                        {
+                            var rowClasses = new[] { "table-default", "table-active", "table-primary", "table-secondary", "table-success", "table-danger", "table-warning", "table-info" };
+                            var rowIndex = 0;
+
+                            @foreach (var lab in Model)
+                            {
+                                var rowClass = rowClasses[rowIndex % rowClasses.Length];
+                                rowIndex++;
+
+                                <tr class="clickable-row @rowClass" style="cursor: pointer;" onclick="window.location.href='@Url.Action("EditLab", "Dashboards", new { id = lab.Id })'">
+                                    <td>@lab.LabNumberInSchool</td>
+                                    <td>@lab.Type</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="2">لا يوجد مختبرات في مدرستك</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
